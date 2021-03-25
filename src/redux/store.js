@@ -3,7 +3,7 @@ import todosReducer from './reducer';
 import logger from 'redux-logger';
 import {
   persistStore,
-  persistReducer,
+  // persistReducer,
   FLUSH,
   REHYDRATE,
   PAUSE,
@@ -11,7 +11,7 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+// import storage from 'redux-persist/lib/storage';
 
 const middleware = [
   ...getDefaultMiddleware({
@@ -23,14 +23,17 @@ const middleware = [
 ];
 
 // const persReducer = persistReducer(persistConfig, rootReducer);
-const todosPersistConfig = {
-  key: 'todos',
-  storage,
-  blacklist: ['filter'],
-};
+// const todosPersistConfig = {
+//   key: 'todos',
+//   storage,
+//   blacklist: ['filter'],
+// };
 
 const store = configureStore({
-  reducer: { todos: persistReducer(todosPersistConfig, todosReducer) },
+  reducer: {
+    // todos: persistReducer(todosPersistConfig, todosReducer),
+    todos: todosReducer,
+  },
   middleware,
   devTools: process.env.NODE_ENV === 'development',
 });

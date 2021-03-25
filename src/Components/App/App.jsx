@@ -4,7 +4,10 @@ import Filter from '../Filter';
 import ContactList from '../ContactList';
 import styles from './App.module.css';
 import { connect } from 'react-redux';
-import { addContacts } from '../../redux/actions';
+import { addContacts } from '../../redux/contacts.operations';
+import { fetchContacts } from '../../redux/contacts.operations';
+import Loader from 'react-loader-spinner';
+import style from '../../Loader.module.css';
 
 class App extends Component {
   state = {
@@ -12,19 +15,9 @@ class App extends Component {
     number: '',
   };
 
-  // componentDidMount() {
-  //   const localInfo = localStorage.getItem('contacts');
-  //   const parseContacts = JSON.parse(localInfo);
-  //   if (parseContacts) {
-  //     this.setState({ contacts: parseContacts });
-  //   }
-  // }
-
-  // componentDidUpdate(prevState) {
-  //   if (this.state.contacts.length !== prevState.contacts.length) {
-  //     localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-  //   }
-  // }
+  componentDidMount() {
+    this.props.fetchContacts();
+  }
 
   handleSubmit = event => {
     event.preventDefault();
@@ -64,19 +57,32 @@ class App extends Component {
         <h2 className={styles.title2}>Contacts</h2>
         <Filter />
         <ContactList />
+        {this.props.isLoading && (
+          <Loader
+            type="Grid"
+            color="royalblue"
+            height={40}
+            width={40}
+            className={style.loader}
+          />
+        )}
       </div>
     );
   }
 }
 
 const mapStateToProps = state => {
-  return { state: state.todos.contacts };
+  return {
+    state: state.todos.contacts,
+    isLoading: state.todos.loading,
+  };
 };
 const mapDispatchToProps = dispatch => {
   return {
     onSubmit: (name, number) => {
       return dispatch(addContacts(name, number));
     },
+    fetchContacts: () => dispatch(fetchContacts()),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(App);
