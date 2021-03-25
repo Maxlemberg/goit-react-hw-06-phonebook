@@ -2,13 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styles from './ContactsList.module.css';
 import { deleteContact } from '../../redux/contacts.operations';
+import {
+  getContacts,
+  getFilter,
+  getVisibleContacts,
+} from '../../redux/contacts-selectors';
 
-const ContactList = ({ contacts, filter, onDelete }) => {
-  const lowerName = filter.toLowerCase();
-  const arr = contacts.filter(item =>
-    item.name.toLowerCase().includes(lowerName),
-  );
-  const itemLi = arr.map(({ id, name, number }) => {
+const ContactList = ({ onDelete, visibleContacts }) => {
+  const itemLi = visibleContacts.map(({ id, name, number }) => {
     return (
       <li key={id} className={styles.itemLi}>
         <span className={styles.text}>
@@ -29,8 +30,7 @@ const ContactList = ({ contacts, filter, onDelete }) => {
 };
 
 const mapStateToProps = state => ({
-  contacts: state.todos.contacts,
-  filter: state.todos.filter,
+  visibleContacts: getVisibleContacts(state),
 });
 
 const mapDispatchToProps = dispatch => ({

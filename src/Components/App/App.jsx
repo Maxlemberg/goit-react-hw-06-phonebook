@@ -8,6 +8,7 @@ import { addContacts } from '../../redux/contacts.operations';
 import { fetchContacts } from '../../redux/contacts.operations';
 import Loader from 'react-loader-spinner';
 import style from '../../Loader.module.css';
+import { getLoading, getContacts } from '../../redux/contacts-selectors';
 
 class App extends Component {
   state = {
@@ -73,8 +74,8 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    state: state.todos.contacts,
-    isLoading: state.todos.loading,
+    state: getContacts(state),
+    isLoading: getLoading(state),
   };
 };
 const mapDispatchToProps = dispatch => {
