@@ -40,7 +40,7 @@ const deleteContact = id => dispatch => {
   // const strId = id.toString();
   axios
     .delete(`/contacts/${id}`)
-    .then(() => dispatch(deleteContactSucces(+id)))
+    .then(() => dispatch(deleteContactSucces(id)))
     .catch(error => dispatch(deleteContactsFeilure(error)));
 };
 
